@@ -1,9 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
-COPY . .
+# Copy solution file and project file
+COPY StudentGrade.sln ./
+COPY StudentGrade/*.csproj ./StudentGrade/
+
+# Restore dependencies
 RUN dotnet restore
-RUN dotnet publish -c Release -o out
+
+# Copy everything else and build
+COPY . .
+WORKDIR /app/StudentGrade
+RUN dotnet publish -c Release -o /app/out
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
