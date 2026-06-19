@@ -11,9 +11,8 @@ namespace StudentGrade.Extension
         public static IServiceCollection AddApplicationServices
          (this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DefaultConnection");
             services.AddDbContext<GradeAppDbContext>(options =>
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IStudentService, StudentService>();
