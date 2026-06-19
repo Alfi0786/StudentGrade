@@ -22,8 +22,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Expose port (Railway typically uses PORT env variable)
-EXPOSE 8080
-ENV ASPNETCORE_URLS=http://+:8080
-
-ENTRYPOINT ["dotnet", "StudentGrade.dll"]
+# Use shell form to read Railway's PORT variable
+CMD dotnet StudentGrade.dll --urls "http://0.0.0.0:${PORT:-8080}"
